@@ -1,5 +1,6 @@
 import { User } from '../models/user.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 // register controller
 export const registerUser = async (req, res) => {
@@ -74,7 +75,7 @@ const userExists = await User.findOne({username});
 if(!userExists){
       return res.status(404).json({
             success:false,
-            message:'invalid credentials'
+            message:'user doesn"t exist'
       })
 }
 
@@ -90,6 +91,20 @@ if(!isPasswordMatch){
 
 // create a bearer token
 
+const accessToken =  jwt.sign({
+      userId: userExists._id,
+      username: userExists.username,
+      role: userExists.role
+},process.env.JWT_SECRET_KEY,{
+      expiresIn: '30m'
+});
+
+// return a response
+res.status(200).json({
+      success:true,
+      message: 'login successful',
+      accessToken
+})
 
 
   } catch (error) {
