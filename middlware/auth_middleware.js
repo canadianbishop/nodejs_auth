@@ -16,14 +16,13 @@ export const authMiddleware = (req, res, next) => {
 // verify the user info
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    console.log(decodedToken);
     req.userInfo = decodedToken;
 
     next();
   } catch (error) {
     return res.status(401).json({
       success: false,
-      message: 'access denied. no token provided , please login again',
+      message: 'invalid or expired token',
     });
   }
 };

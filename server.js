@@ -4,6 +4,7 @@ import Connect_Db from './database/db.js';
 import authRoutes from './routes/authRoutes.js';
 import homeRoute from './routes/home_routes.js';
 import adminRoutes from './routes/admin_routes.js';
+import imageRoute from './routes/imageRoute.js';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/home', homeRoute)
 app.use('/api/admin', adminRoutes)
+app.use('/api/upload', imageRoute)
 
 const PORT = process.env.PORT || 3000;
 
