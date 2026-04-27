@@ -11,7 +11,7 @@ imageRoute.post('/uploadImage',authMiddleware,isAdmin,upload.single('image'),upl
 
 // get all images
 
-imageRoute.get('/getImages', authMiddleware, getAllImagesController)
+imageRoute.get('/getImages', authMiddleware, getAllImagesController);
 
 
 export default imageRoute;

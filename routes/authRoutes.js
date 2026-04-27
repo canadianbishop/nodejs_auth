@@ -1,5 +1,6 @@
 import express from 'express';
-import { loginUser, registerUser } from '../controllers/authController.js';
+import { changePassword, loginUser, registerUser } from '../controllers/authController.js';
+import { authMiddleware } from '../middlware/auth_middleware.js';
 
 const authRoutes = express.Router();
 
@@ -9,8 +10,13 @@ const authRoutes = express.Router();
 
 authRoutes.post('/register', registerUser);
 
-
+//login user
 authRoutes.post('/login', loginUser);
+
+// change password
+
+authRoutes.post('/change-password',authMiddleware, changePassword)
+
 
 
 
