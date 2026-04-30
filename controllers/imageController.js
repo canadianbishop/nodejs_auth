@@ -104,11 +104,9 @@ export const deleteImageController = async (req, res) => {
     await Image.findByIdAndDelete(getImageId);
 
     return res.status(200).json({
-      success:true,
-      message:'image deleted successfully'
-    })
-
-    
+      success: true,
+      message: 'image deleted successfully',
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -118,5 +116,44 @@ export const deleteImageController = async (req, res) => {
   }
 };
 
+// pagination
 
-// 69f093b6bb919a0f9b29c5bf
+export const fetchImageController = async (req, res) => {
+  try {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 2;
+  const skip = parseInt(page -1) * limit;
+  const sortBy =  req.query.sortBy || 'createdAt';
+  const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
+  const totalImages = await Image.countDocuments();
+  const totalPages = Math.ceil(totalImages/limit);
+
+  const sortObj = {};
+  sortObj[sortBy] = sortOrder;
+  
+  const images = await Image.find().sort(sortObj).skip(skip).limit(limit);
+
+  if(images.lenght === 0){
+    return res.status(404).json({
+      success:false,
+      message: 'no image found'
+    })
+  }
+
+  return res.status(200).json({
+    success:true,
+    totalPages,
+    totalImages,
+    data: images
+  })
+
+
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: 'server errror something went wrong',
+    });
+  }
+};

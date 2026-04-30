@@ -2,8 +2,7 @@ import express from 'express';
 import { authMiddleware } from '../middlware/auth_middleware.js';
 import { isAdmin } from '../middlware/adminMiddleware.js';
 import { upload } from '../middlware/uploadMiddleware.js';
-import { deleteImageController, getAllImagesController, uploadImageController } from '../controllers/imageController.js';
-import adminRoutes from './admin_routes.js';
+import { deleteImageController, fetchImageController, getAllImagesController, uploadImageController } from '../controllers/imageController.js';
 
 const imageRoute = express.Router();
 
@@ -18,5 +17,9 @@ imageRoute.get('/getImages', authMiddleware, getAllImagesController);
 // delete image
 
 imageRoute.delete('/delete/:id', authMiddleware,isAdmin, deleteImageController)
+
+//fetch paginated images
+
+imageRoute.get('/getImage', authMiddleware,fetchImageController)
 
 export default imageRoute;
